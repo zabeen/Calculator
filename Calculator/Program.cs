@@ -6,26 +6,50 @@ namespace Calculator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to the calculator!");
+            Console.WriteLine("Welcome to the calculator!\n==========================");
 
-            // prompt user to provide two numbers
-            Console.WriteLine("1st Number:");
-            string firstNo = Console.ReadLine();
+            // Request inputs
+            Console.Write("Please enter the operator: ");
+            String op = Console.ReadLine();
 
-            Console.WriteLine("2nd Number:");
-            string secondNo = Console.ReadLine();
+            Console.Write("Please enter the first number: ");
+            String firstNo = Console.ReadLine();
 
-            // Convert numbers to ints - catch error if non-int submitted
-            int x;
-            int y;
+            Console.Write("Please enter the second number: ");
+            String secondNo = Console.ReadLine();
 
+            // try block to handle exception when non-int input submitted
             try
             {
-                x = int.Parse(firstNo);
-                y = int.Parse(secondNo);
+                int x = int.Parse(firstNo);
+                int y = int.Parse(secondNo);
+                int answer = 0;
+                bool errorFlag = false;
 
-                // multiple the two numbers and write the product
-                Console.WriteLine("Result: {0}", x * y);
+                // set calculation by operator
+                switch (op)
+                {
+                    case "+":
+                        answer = x + y;
+                        break;
+                    case "-":
+                        answer = x - y;
+                        break;
+                    case "*":
+                        answer = x * y;
+                        break;
+                    case "/":
+                        answer = x / y;
+                        break;
+                    default:
+                        Console.WriteLine("Error: unexpected operator. Only +, -, * or / accepted.");
+                        errorFlag = true;
+                        break;
+                }
+
+                // only write out answer if no errors encountered
+                if(!errorFlag)
+                    Console.WriteLine("The answer is: {0}", answer);
             }
             catch (FormatException)
             {
