@@ -34,8 +34,8 @@ namespace Calculator
         {
             // Request inputs
             string operatorStr = GetOperatorFromUser();
-            int noOfOperands = GetIntegerFromUser("How many numbers do you want to " + operatorStr + "? ");
-            decimal answer = CalculateAnswer(operatorStr, noOfOperands);
+            List<int> operands = GetListOfOperands(operatorStr);
+            decimal answer = CalculateAnswer(operatorStr, operands);
 
             // write out final answer
             Console.WriteLine("The answer is {0}.", answer);
@@ -68,18 +68,29 @@ namespace Calculator
             return submittedInt;
         }
 
-        private static decimal CalculateAnswer (string operatorStr, int noOfOperands)
+        private static List<int> GetListOfOperands(string operatorStr)
         {
-            decimal answer = 0;
+            List<int> operands = new List<int>();
+            int noOfOperands = GetIntegerFromUser(string.Format("How many numbers do you want to {0}? ", operatorStr));
+
             for (int i = 0; i < noOfOperands; i++)
             {
                 // ask for operand
-                int operand = GetIntegerFromUser("Please enter number " + (i + 1) + ": ");
+                operands.Add(GetIntegerFromUser(string.Format("Please enter number {0}: ", i + 1)));
+            }
 
+            return operands;
+        }
+
+        private static decimal CalculateAnswer (string operatorStr, List<int> operands)
+        {
+            decimal answer = 0;
+            for (int i = 0; i < operands.Count; i++)
+            {
                 // Set answer var to val of first input on first loop
                 if (i == 0)
                 {
-                    answer = operand;
+                    answer = operands[i];
                 }
                 else
                 {
@@ -87,16 +98,16 @@ namespace Calculator
                     switch (operatorStr)
                     {
                         case "+":
-                            answer += operand;
+                            answer += operands[i];
                             break;
                         case "-":
-                            answer -= operand;
+                            answer -= operands[i];
                             break;
                         case "*":
-                            answer *= operand;
+                            answer *= operands[i];
                             break;
                         case "/":
-                            answer /= operand;
+                            answer /= operands[i];
                             break;
                         default:
                             break;
