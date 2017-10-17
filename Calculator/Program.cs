@@ -14,7 +14,18 @@ namespace Calculator
             bool continueCalc = false;
             do
             {
-                PerformOneCalculation();
+                int mode = AskForCalculationMode();
+
+                switch (mode)
+                {
+                    case 1:
+                        PerformOneCalculation();
+                        break;
+                    case 2:
+                        PerformOneDateCalculation();
+                        break;
+                }
+
                 continueCalc = ShouldContinue();
             }
             while (continueCalc);
@@ -28,6 +39,52 @@ namespace Calculator
         private static void PrintWelcomeMessage()
         {
             Console.WriteLine("Welcome to the calculator!\n==========================");
+        }
+
+        private static bool ShouldContinue()
+        {
+            string response = "";
+            // keep asking user for response until they type either 'y' or 'n'
+            do
+            {
+                Console.WriteLine("Do you wish to continue? y/n");
+                response = Console.ReadLine().ToLower();
+            }
+            while (response != "y" && response != "n");
+
+            return (response == "y");
+        }
+
+        private static void PrintFarewellMessage()
+        {
+            Console.WriteLine("Goodbye!");
+        }
+
+        private static int GetIntegerFromUser(string messageStr)
+        {
+            int submittedInt = 0;
+            String input = "";
+            do
+            {
+                Console.Write(messageStr);
+                input = Console.ReadLine();
+            }
+            while (!int.TryParse(input, out submittedInt));
+
+            return submittedInt;
+        }
+
+        private static int AskForCalculationMode()
+        {
+            int mode = 0;
+            do
+            {
+                string msg = "Which calculator mode do you want?" + "\n" + "1) Numbers" + "\n" + "2) Dates" + "\n";
+                mode = GetIntegerFromUser(msg);
+            }
+            while (mode != 1 && mode != 2);
+
+            return mode;
         }
 
         private static void PerformOneCalculation()
@@ -54,20 +111,6 @@ namespace Calculator
             return op;
         }
 
-        private static int GetIntegerFromUser(string messageStr)
-        {
-            int submittedInt = 0;
-            String input = "";
-            do
-            {
-                Console.Write(messageStr);
-                input = Console.ReadLine();
-            }
-            while (!int.TryParse(input, out submittedInt));
-
-            return submittedInt;
-        }
-
         private static List<int> GetListOfOperands(string operatorStr)
         {
             List<int> operands = new List<int>();
@@ -82,7 +125,7 @@ namespace Calculator
             return operands;
         }
 
-        private static decimal CalculateAnswer (string operatorStr, List<int> operands)
+        private static decimal CalculateAnswer(string operatorStr, List<int> operands)
         {
             decimal answer = 0;
             for (int i = 0; i < operands.Count; i++)
@@ -118,23 +161,29 @@ namespace Calculator
             return answer;
         }
 
-        private static bool ShouldContinue()
+        private static void PerformOneDateCalculation()
         {
-            string response = "";
-            // keep asking user for response until they type either 'y' or 'n'
-            do
-            {
-                Console.WriteLine("Do you wish to continue? y/n");
-                response = Console.ReadLine().ToLower();
-            }
-            while (response != "y" && response != "n");
+            // Request inputs
+            DateTime originalDate = GetDateFromUser();
+            int daysToAdd = GetIntegerFromUser("Please enter the number of days to add: ");
+            DateTime answer = originalDate.AddDays(daysToAdd);
 
-            return (response == "y");
+            // write out final answer
+            Console.WriteLine("The answer is {0}.", answer.ToShortDateString());
         }
 
-        private static void PrintFarewellMessage()
+        private static DateTime GetDateFromUser()
         {
-            Console.WriteLine("Goodbye!");
+            DateTime submittedDate;
+            String input = "";
+            do
+            {
+                Console.Write("Please enter a date: ");
+                input = Console.ReadLine();
+            }
+            while (!DateTime.TryParse(input, out submittedDate));
+
+            return submittedDate;
         }
     }
 }
