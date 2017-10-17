@@ -25,8 +25,7 @@ namespace Calculator
                         break;
                 }
 
-                Console.WriteLine("The answer is {0}.", answer);
-
+                PrintAnswer(answer);
                 continueCalc = UserInput.ShouldContinue();
             }
             while (continueCalc);
@@ -47,5 +46,9 @@ namespace Calculator
             Console.WriteLine("Goodbye!");
         }
 
+        private static void PrintAnswer(string answer)
+        {
+            Console.WriteLine("The answer is {0}.", answer);
+        }
     }
 }
