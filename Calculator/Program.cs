@@ -8,6 +8,7 @@ namespace Calculator
         static void Main(string[] args)
         {
             UserOutput.PrintWelcomeMessage();
+            Log log = new Log("CalculatorLog.txt");
 
             bool continueCalc = false;
             do
@@ -18,10 +19,10 @@ namespace Calculator
                 switch (mode)
                 {
                     case (int)UserInput.Mode.Numbers:
-                        answer = new NumberCalculator().PerformOneCalculation();
+                        answer = new NumberCalculator(log).PerformOneCalculation();
                         break;
                     case (int)UserInput.Mode.Dates:
-                        answer = new DateCalculator().PerformOneDateCalculation();
+                        answer = new DateCalculator(log).PerformOneDateCalculation();
                         break;
                 }
 
@@ -31,6 +32,8 @@ namespace Calculator
             while (continueCalc);
 
             UserOutput.PrintFarewellMessage();
+            log.CommitLogEntryToFile();
+
             Console.ReadLine();
         }
     }

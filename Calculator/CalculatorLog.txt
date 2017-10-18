@@ -1,0 +1,4 @@
+DateTime	Mode	Calculation	Answer
+18/10/2017 23:51:02	Numbers	1+2+3	6
+18/10/2017 23:51:09	Dates	01/01/2015 + 3434days	27/05/2024
+

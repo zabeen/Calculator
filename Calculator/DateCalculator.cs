@@ -3,8 +3,11 @@ namespace Calculator
 {
     public class DateCalculator
     {
-        public DateCalculator()
+        private Log _log;
+
+        public DateCalculator(Log log)
         {
+            _log = log;
         }
 
         public string PerformOneDateCalculation()
@@ -12,9 +15,13 @@ namespace Calculator
             // Request inputs
             DateTime originalDate = GetDateFromUser();
             int daysToAdd = UserInput.GetInteger("Please enter the number of days to add: ");
-            DateTime answer = originalDate.AddDays(daysToAdd);
 
-            return answer.ToShortDateString();
+            DateTime answer = originalDate.AddDays(daysToAdd);
+            String shortDateAnswer = answer.ToShortDateString();
+
+            LogCalculation(originalDate.ToShortDateString(), daysToAdd.ToString(), shortDateAnswer);
+
+            return shortDateAnswer;
         }
 
         private DateTime GetDateFromUser()
@@ -29,6 +36,18 @@ namespace Calculator
             while (!DateTime.TryParse(input, out submittedDate));
 
             return submittedDate;
+        }
+
+        private void LogCalculation(string originalDate, string daysToAdd, string answer)
+        {
+            _log.AppendTextToLogEntry(
+                string.Format(
+                    "{0}\t{1}\t{2} + {3}days\t{4}\n",
+                    DateTime.Now.ToString(),
+                    UserInput.Mode.Dates,
+                    originalDate,
+                    daysToAdd,
+                    answer));       
         }
     }
 }

@@ -5,10 +5,12 @@ namespace Calculator
 {
     public class NumberCalculator
     {
-        private List<string> operators = new List<string> { "+", "-", "*", "/" };
+        private List<string> _operators = new List<string> { "+", "-", "*", "/" };
+        private Log _log;
 
-        public NumberCalculator()
+        public NumberCalculator(Log log)
         {
+            _log = log;
         }
 
         public string PerformOneCalculation()
@@ -29,7 +31,7 @@ namespace Calculator
                 Console.Write("Please enter the operator: ");
                 op = Console.ReadLine();
             }
-            while (!operators.Contains(op));
+            while (!_operators.Contains(op));
 
             return op;
         }
@@ -57,6 +59,8 @@ namespace Calculator
                 if (i == 0)
                 {
                     answer = operands[i];
+                    _log.AppendTextToLogEntry(
+                        string.Format("{0}\t{1}\t{2}", DateTime.Now.ToString(), UserInput.Mode.Numbers, operands[i].ToString()));
                 }
                 else
                 {
@@ -78,8 +82,12 @@ namespace Calculator
                         default:
                             break;
                     }
+
+                    _log.AppendTextToLogEntry(string.Format("{0}{1}", operatorStr, operands[i].ToString()));
                 }
             }
+
+            _log.AppendTextToLogEntry(string.Format("\t{0}\n", answer));
 
             return answer;
         }
