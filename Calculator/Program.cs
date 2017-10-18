@@ -7,7 +7,7 @@ namespace Calculator
     {
         static void Main(string[] args)
         {
-            PrintWelcomeMessage();
+            UserOutput.PrintWelcomeMessage();
 
             bool continueCalc = false;
             do
@@ -25,30 +25,13 @@ namespace Calculator
                         break;
                 }
 
-                PrintAnswer(answer);
+                UserOutput.PrintAnswer(answer);
                 continueCalc = UserInput.ShouldContinue();
             }
             while (continueCalc);
 
-            PrintFarewellMessage();
-
-            // Wait
+            UserOutput.PrintFarewellMessage();
             Console.ReadLine();
-        }
-
-        private static void PrintWelcomeMessage()
-        {
-            Console.WriteLine("Welcome to the calculator!\n==========================");
-        }
-
-        private static void PrintFarewellMessage()
-        {
-            Console.WriteLine("Goodbye!");
-        }
-
-        private static void PrintAnswer(string answer)
-        {
-            Console.WriteLine("The answer is {0}.", answer);
         }
     }
 }
