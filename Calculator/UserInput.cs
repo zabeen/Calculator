@@ -47,9 +47,7 @@ namespace Calculator
             int selectedMode = 0;
             do
             {
-                string msg = string.Format(
-                    "Which calculator mode do you want?\n{0}) {1}\n{2}) {3}\n",
-                    (int)Mode.Numbers, Mode.Numbers, (int)Mode.Dates, Mode.Dates);
+                string msg = $"Which calculator mode do you want?\n{(int)Mode.Numbers}) {Mode.Numbers}\n{(int)Mode.Dates}) {Mode.Dates}\n";
                 selectedMode = UserInput.GetInteger(msg);
             }
             while (selectedMode != (int)Mode.Numbers && selectedMode != (int)Mode.Dates);

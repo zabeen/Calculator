@@ -41,7 +41,7 @@ namespace Calculator
             do
             {
                 counter++;
-                currentInt = UserInput.GetNullableInteger(string.Format("Please enter number {0}: ", counter));
+                currentInt = UserInput.GetNullableInteger($"Please enter number {counter}: ");
                 if (currentInt != null)
                     operands.Add(currentInt);
             }
@@ -70,7 +70,7 @@ namespace Calculator
                     answer = numbers.Aggregate((a, b) => a / b);
                     break;
                 default:
-                    throw new ArgumentException(string.Format("\"{0}\" is an unsupported operator.", operatorStr));
+                    throw new ArgumentException($"\"{operatorStr}\" is an unsupported operator.");
             }
 
             LogCalculation(operatorStr, numbers, answer);

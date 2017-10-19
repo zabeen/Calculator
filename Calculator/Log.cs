@@ -49,18 +49,12 @@ namespace Calculator
 
         private string ConstructLogEntryString(CalculatorOutput entry)
         {
-            return string.Format(
-                "{0}\t{1}\t{2}\t{3}\t{4}",
-                entry.DateTime,
-                entry.Mode,
-                entry.Operator,
-                entry.Operands,
-                entry.Answer);
+            return $"{entry.DateTime}\t{entry.Mode}\t{entry.Operator}\t{entry.Operands}\t{entry.Answer}";
         }
 
         private string ConstructErrorMessage(string action, string exception)
         {
-            return string.Format("Error when {0} log file, located at {1}.\n{2}", action, _writePath, exception);
+            return $"Error when {action} log file, located at {_writePath}.\n{exception}";
         }
 
         private List<string> ConstructHeaderText()

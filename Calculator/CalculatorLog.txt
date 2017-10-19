@@ -1,3 +1,2 @@
 DateTime	Mode	Operator	Operands	Answer
-19/10/2017 10:24:50	Numbers	*	3,4,455,232	1266720
-19/10/2017 10:25:00	Dates	+	03/03/2003, 232321days	30/03/2639
+19/10/2017 10:33:05	Numbers	+	2,3	5

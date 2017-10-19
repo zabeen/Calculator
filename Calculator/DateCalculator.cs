@@ -43,11 +43,11 @@ namespace Calculator
             _log.AddToCalculatorOutput(
                new CalculatorOutput()
                {
-                   DateTime = DateTime.Now.ToString(),
-                   Mode = "Dates",
-                   Operator = "+",
-                   Operands = string.Format("{0}, {1}days", originalDate, daysToAdd),
-                   Answer = answer
+                    DateTime = DateTime.Now.ToString(),
+                    Mode = "Dates",
+                    Operator = "+",
+                    Operands = $"{originalDate}, {daysToAdd}days",
+                    Answer = answer
                });
         }
     }
