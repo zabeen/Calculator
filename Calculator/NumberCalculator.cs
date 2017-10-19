@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Calculator
 {
@@ -64,40 +65,31 @@ namespace Calculator
 
         private void CalculateAnswer(string operatorStr, List<int?> operands)
         {
-            decimal answer = 0;
-            for (int i = 0; i < operands.Count; i++)
-            {
-                // Set answer var to val of first input on first loop
-                if (i == 0)
-                {
-                    answer = operands[i].Value;
-                    _output.Operands = operands[i].ToString();
-                }
-                else
-                {
-                    // set calculation by operator
-                    switch (operatorStr)
-                    {
-                        case "+":
-                            answer += operands[i].Value;
-                            break;
-                        case "-":
-                            answer -= operands[i].Value;
-                            break;
-                        case "*":
-                            answer *= operands[i].Value;
-                            break;
-                        case "/":
-                            answer /= operands[i].Value;
-                            break;
-                        default:
-                            break;
-                    }
+            List<int> numbers = operands.Select(o => o.Value).ToList();
 
-                    _output.Operands += string.Format(",{0}", operands[i].Value.ToString());
-                }
+            decimal answer = 0;
+            switch (operatorStr)
+            {
+                case "+":
+                    answer = numbers.Sum();
+                    break;
+                case "-":
+                    answer = numbers.Aggregate((a, b) => a - b);
+                    break;
+                case "*":
+                    answer = numbers.Aggregate((a, b) => a * b);
+                    break;
+                case "/":
+                    answer = numbers.Aggregate((a, b) => a / b);
+                    break;
             }
 
+            LogCalculation(numbers, answer);
+        }
+
+        private void LogCalculation(List<int> operands, decimal answer)
+        {
+            _output.Operands = string.Join(",", operands.Select(o => o.ToString()).ToList());
             _output.Answer = answer.ToString();
             _log.AddToCalculatorOutput(_output);
         }
