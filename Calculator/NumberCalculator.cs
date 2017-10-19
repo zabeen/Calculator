@@ -7,20 +7,28 @@ namespace Calculator
     {
         private List<string> _operators = new List<string> { "+", "-", "*", "/" };
         private Log _log;
+        private CalculatorOutput _output;
 
         public NumberCalculator(Log log)
         {
             _log = log;
+
+            _output = new CalculatorOutput(){
+                DateTime = DateTime.Now.ToString(),
+                Mode = "Numbers"
+                };
         }
 
-        public string PerformOneCalculation()
+        public CalculatorOutput PerformOneCalculation()
         {
             // Request inputs
             string operatorStr = GetOperatorFromUser();
-            List<int> operands = GetListOfOperands(operatorStr);
-            decimal answer = CalculateAnswer(operatorStr, operands);
+            _output.Operator = operatorStr;
 
-            return answer.ToString();
+            List<int> operands = GetListOfOperands(operatorStr);
+            CalculateAnswer(operatorStr, operands);
+
+            return _output;
         }
 
         private string GetOperatorFromUser()
@@ -50,7 +58,7 @@ namespace Calculator
             return operands;
         }
 
-        private decimal CalculateAnswer(string operatorStr, List<int> operands)
+        private void CalculateAnswer(string operatorStr, List<int> operands)
         {
             decimal answer = 0;
             for (int i = 0; i < operands.Count; i++)
@@ -59,8 +67,7 @@ namespace Calculator
                 if (i == 0)
                 {
                     answer = operands[i];
-                    _log.AppendTextToLogEntry(
-                        string.Format("{0}\t{1}\t{2}", DateTime.Now.ToString(), UserInput.Mode.Numbers, operands[i].ToString()));
+                    _output.Operands = operands[i].ToString();
                 }
                 else
                 {
@@ -83,13 +90,12 @@ namespace Calculator
                             break;
                     }
 
-                    _log.AppendTextToLogEntry(string.Format("{0}{1}", operatorStr, operands[i].ToString()));
+                    _output.Operands += string.Format(",{0}", operands[i].ToString());
                 }
             }
 
-            _log.AppendTextToLogEntry(string.Format("\t{0}\n", answer));
-
-            return answer;
+            _output.Answer = answer.ToString();
+            _log.AddToCalculatorOutput(_output);
         }
     }
 }

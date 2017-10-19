@@ -14,25 +14,25 @@ namespace Calculator
             do
             {
                 int mode = UserInput.AskForCalculationMode();
-                string answer = "";
+                CalculatorOutput output = new CalculatorOutput();
 
                 switch (mode)
                 {
                     case (int)UserInput.Mode.Numbers:
-                        answer = new NumberCalculator(log).PerformOneCalculation();
+                        output = new NumberCalculator(log).PerformOneCalculation();
                         break;
                     case (int)UserInput.Mode.Dates:
-                        answer = new DateCalculator(log).PerformOneDateCalculation();
+                        output = new DateCalculator(log).PerformOneDateCalculation();
                         break;
                 }
 
-                UserOutput.PrintAnswer(answer);
+                UserOutput.PrintAnswer(output.Answer);
                 continueCalc = UserInput.ShouldContinue();
             }
             while (continueCalc);
 
             UserOutput.PrintFarewellMessage();
-            log.CommitLogEntryToFile();
+            log.CommitOutputToLogFile();
 
             Console.ReadLine();
         }

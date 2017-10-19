@@ -1,4 +1,3 @@
-DateTime	Mode	Calculation	Answer
-18/10/2017 23:51:02	Numbers	1+2+3	6
-18/10/2017 23:51:09	Dates	01/01/2015 + 3434days	27/05/2024
-
+DateTime	Mode	Operator	Operands	Answer
+19/10/2017 01:05:28	Numbers	+	1,2	3
+19/10/2017 01:05:39	Dates	+	02/09/2011,3223days	29/06/2020

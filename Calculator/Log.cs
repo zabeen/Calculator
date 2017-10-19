@@ -1,14 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Calculator
 {
     public class Log
     {
+        private List<CalculatorOutput> _output = new List<CalculatorOutput>();
         private string _writePath = "";
-        private StringBuilder _logEntry = new StringBuilder();
-        private string _logHeaderText = "DateTime\tMode\tCalculation\tAnswer\n";
+        private string[] _logHeaderText = { "DateTime\tMode\tOperator\tOperands\tAnswer" };
 
         public Log(string writePath)
         {
@@ -20,19 +22,29 @@ namespace Calculator
                 CreateLog();
         }
 
-        public void AppendTextToLogEntry(string text)
+        public void AddToCalculatorOutput(CalculatorOutput output)
         {
-            _logEntry.Append(text);
+            _output.Add(output);
         }
 
-        public void CommitLogEntryToFile()
+        public void CommitOutputToLogFile()
         {
             try
             {
-                using (StreamWriter sw = File.AppendText(_writePath))
+                List<string> lines = new List<string>();
+
+                foreach (CalculatorOutput line in _output)
                 {
-                    sw.WriteLine(_logEntry);
+                    lines.Add(
+                        string.Format("{0}\t{1}\t{2}\t{3}\t{4}",
+                                      line.DateTime,
+                                      line.Mode,
+                                      line.Operator,
+                                      line.Operands,
+                                      line.Answer));
                 }
+
+                File.AppendAllLines(_writePath, lines);
             }
             catch (Exception ex)
             {
@@ -44,7 +56,7 @@ namespace Calculator
         {
             try
             {
-                File.WriteAllText(_writePath, _logHeaderText);
+                File.WriteAllLines(_writePath, _logHeaderText);
             }
             catch (Exception ex)
             {
@@ -58,7 +70,7 @@ namespace Calculator
             {
                 using (StreamWriter sw = File.CreateText(_writePath))
                 {
-                    sw.Write(_logHeaderText);
+                    sw.WriteLine(_logHeaderText[0]);
                 }
             }
             catch (Exception ex)
