@@ -6,7 +6,6 @@ namespace Calculator
 {
     public class NumberCalculator
     {
-        private List<string> _operators = new List<string> { "+", "-", "*", "/" };
         private Log _log;
         private CalculatorOutput _output;
 
@@ -35,12 +34,9 @@ namespace Calculator
         private string GetOperatorFromUser()
         {
             String op = "";
-            do
-            {
-                Console.Write("Please enter the operator: ");
-                op = Console.ReadLine();
-            }
-            while (!_operators.Contains(op));
+
+            Console.Write("Please enter the operator: ");
+            op = Console.ReadLine();
 
             return op;
         }
@@ -82,6 +78,8 @@ namespace Calculator
                 case "/":
                     answer = numbers.Aggregate((a, b) => a / b);
                     break;
+                default:
+                    throw new ArgumentException(string.Format("\"{0}\" is an unsupported operator.", operatorStr));
             }
 
             LogCalculation(numbers, answer);

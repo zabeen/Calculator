@@ -17,5 +17,10 @@ namespace Calculator
         {
             Console.WriteLine("The answer is {0}.", answer);
         }
+
+        public static void PrintError(string errorMessage)
+        {
+            Console.WriteLine("Error! {0}", errorMessage);
+        }
     }
 }

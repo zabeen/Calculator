@@ -16,17 +16,25 @@ namespace Calculator
                 int mode = UserInput.AskForCalculationMode();
                 CalculatorOutput output = new CalculatorOutput();
 
-                switch (mode)
+                try
                 {
-                    case (int)UserInput.Mode.Numbers:
-                        output = new NumberCalculator(log).PerformOneCalculation();
-                        break;
-                    case (int)UserInput.Mode.Dates:
-                        output = new DateCalculator(log).PerformOneDateCalculation();
-                        break;
+                    switch (mode)
+                    {
+                        case (int)UserInput.Mode.Numbers:
+                            output = new NumberCalculator(log).PerformOneCalculation();
+                            break;
+                        case (int)UserInput.Mode.Dates:
+                            output = new DateCalculator(log).PerformOneDateCalculation();
+                            break;
+                    }
+
+                    UserOutput.PrintAnswer(output.Answer);
+                }
+                catch (ArgumentException ex)
+                {
+                    UserOutput.PrintError(ex.Message);
                 }
 
-                UserOutput.PrintAnswer(output.Answer);
                 continueCalc = UserInput.ShouldContinue();
             }
             while (continueCalc);
