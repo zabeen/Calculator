@@ -10,11 +10,12 @@ namespace Calculator
     {
         private List<CalculatorOutput> _output = new List<CalculatorOutput>();
         private string _writePath = "";
-        private string[] _logHeaderText = { "DateTime\tMode\tOperator\tOperands\tAnswer" };
+        private List<string> _logHeaderText;
 
         public Log(string writePath)
         {
             _writePath = writePath;
+            _logHeaderText = ConstructHeaderText();
 
             if (File.Exists(_writePath))
                 ClearLog();
@@ -33,15 +34,9 @@ namespace Calculator
             {
                 List<string> lines = new List<string>();
 
-                foreach (CalculatorOutput line in _output)
+                foreach (CalculatorOutput entry in _output)
                 {
-                    lines.Add(
-                        string.Format("{0}\t{1}\t{2}\t{3}\t{4}",
-                                      line.DateTime,
-                                      line.Mode,
-                                      line.Operator,
-                                      line.Operands,
-                                      line.Answer));
+                    lines.Add(ConstructLogEntryString(entry));
                 }
 
                 File.AppendAllLines(_writePath, lines);
@@ -50,6 +45,37 @@ namespace Calculator
             {
                 Console.WriteLine(ConstructErrorMessage("commiting entry to", ex.Message));
             }
+        }
+
+        private string ConstructLogEntryString(CalculatorOutput entry)
+        {
+            return string.Format(
+                "{0}\t{1}\t{2}\t{3}\t{4}",
+                entry.DateTime,
+                entry.Mode,
+                entry.Operator,
+                entry.Operands,
+                entry.Answer);
+        }
+
+        private string ConstructErrorMessage(string action, string exception)
+        {
+            return string.Format("Error when {0} log file, located at {1}.\n{2}", action, _writePath, exception);
+        }
+
+        private List<string> ConstructHeaderText()
+        {
+            List<string> header = new List<string>();
+
+            header.Add(ConstructLogEntryString(new CalculatorOutput() {
+                DateTime = "DateTime",
+                Mode = "Mode",
+                Operator = "Operator",
+                Operands = "Operands",
+                Answer = "Answer"
+            }));
+
+            return header;
         }
 
         private void ClearLog()
@@ -77,11 +103,6 @@ namespace Calculator
             {
                 Console.WriteLine(ConstructErrorMessage("creating", ex.Message));
             }
-        }
-
-        private string ConstructErrorMessage(string action, string exception)
-        {
-            return string.Format("Error when {0} log file, located at {1}.\n{2}", action, _writePath, exception);
         }
     }
 }
