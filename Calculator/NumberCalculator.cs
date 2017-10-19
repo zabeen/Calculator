@@ -25,7 +25,7 @@ namespace Calculator
             string operatorStr = GetOperatorFromUser();
             _output.Operator = operatorStr;
 
-            List<int> operands = GetListOfOperands(operatorStr);
+            List<int?> operands = GetListOfOperands(operatorStr);
             CalculateAnswer(operatorStr, operands);
 
             return _output;
@@ -44,21 +44,25 @@ namespace Calculator
             return op;
         }
 
-        private List<int> GetListOfOperands(string operatorStr)
+        private List<int?> GetListOfOperands(string operatorStr)
         {
-            List<int> operands = new List<int>();
-            int noOfOperands = UserInput.GetInteger(string.Format("How many numbers do you want to {0}? ", operatorStr));
+            List<int?> operands = new List<int?>();
+            int counter = 0;
+            int? currentInt = null;
 
-            for (int i = 0; i < noOfOperands; i++)
+            do
             {
-                // ask for operand
-                operands.Add(UserInput.GetInteger(string.Format("Please enter number {0}: ", i + 1)));
+                counter++;
+                currentInt = UserInput.GetNullableInteger(string.Format("Please enter number {0}: ", counter));
+                if (currentInt != null)
+                    operands.Add(currentInt);
             }
+            while (currentInt != null);
 
             return operands;
         }
 
-        private void CalculateAnswer(string operatorStr, List<int> operands)
+        private void CalculateAnswer(string operatorStr, List<int?> operands)
         {
             decimal answer = 0;
             for (int i = 0; i < operands.Count; i++)
@@ -66,7 +70,7 @@ namespace Calculator
                 // Set answer var to val of first input on first loop
                 if (i == 0)
                 {
-                    answer = operands[i];
+                    answer = operands[i].Value;
                     _output.Operands = operands[i].ToString();
                 }
                 else
@@ -75,22 +79,22 @@ namespace Calculator
                     switch (operatorStr)
                     {
                         case "+":
-                            answer += operands[i];
+                            answer += operands[i].Value;
                             break;
                         case "-":
-                            answer -= operands[i];
+                            answer -= operands[i].Value;
                             break;
                         case "*":
-                            answer *= operands[i];
+                            answer *= operands[i].Value;
                             break;
                         case "/":
-                            answer /= operands[i];
+                            answer /= operands[i].Value;
                             break;
                         default:
                             break;
                     }
 
-                    _output.Operands += string.Format(",{0}", operands[i].ToString());
+                    _output.Operands += string.Format(",{0}", operands[i].Value.ToString());
                 }
             }
 

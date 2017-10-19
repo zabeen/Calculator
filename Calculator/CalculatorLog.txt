@@ -1,3 +1,3 @@
 DateTime	Mode	Operator	Operands	Answer
-19/10/2017 01:25:26	Numbers	-	1,2,34,4,5	-44
-19/10/2017 01:25:37	Dates	+	09/09/2009, 223days	20/04/2010
+19/10/2017 01:59:43	Numbers	+	1,2	3
+19/10/2017 01:59:58	Numbers	-	100,50,1	49

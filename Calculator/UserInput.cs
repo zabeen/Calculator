@@ -25,6 +25,23 @@ namespace Calculator
             return submittedInt;
         }
 
+        public static int? GetNullableInteger(string messageStr)
+        {
+            int? submittedInt = null;
+            int parsedInt = 0;
+            String input = "";
+            do
+            {
+                Console.Write(messageStr);
+                input = Console.ReadLine();
+            }
+            while (input != "" && !int.TryParse(input, out parsedInt));
+
+            submittedInt = (input == "") ? null : (int?)parsedInt;
+
+            return submittedInt;
+        }
+
         public static int AskForCalculationMode()
         {
             int selectedMode = 0;
