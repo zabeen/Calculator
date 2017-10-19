@@ -10,13 +10,12 @@ namespace Calculator
             UserOutput.PrintWelcomeMessage();
 
             Log log = new Log("CalculatorLog.txt");
+
             Dictionary<int, ICalculator> calcs = CreateCalculatorDict(ref log);
 
-            bool continueCalc = false;
             do
             {
                 int mode = UserInput.AskForCalculationMode();
-                CalculatorOutput output = new CalculatorOutput();
 
                 try
                 {
@@ -27,12 +26,11 @@ namespace Calculator
                 {
                     UserOutput.PrintError(ex.Message);
                 }
-
-                continueCalc = UserInput.ShouldContinue();
             }
-            while (continueCalc);
+            while (UserInput.ShouldContinue());
 
             UserOutput.PrintFarewellMessage();
+
             log.CommitOutputToLogFile();
 
             Console.ReadLine();
