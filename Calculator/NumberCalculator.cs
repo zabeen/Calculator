@@ -4,31 +4,22 @@ using System.Linq;
 
 namespace Calculator
 {
-    public class NumberCalculator
+    public class NumberCalculator : ICalculator
     {
         private Log _log;
-        private CalculatorOutput _output;
 
         public NumberCalculator(Log log)
         {
             _log = log;
-
-            _output = new CalculatorOutput(){
-                DateTime = DateTime.Now.ToString(),
-                Mode = "Numbers"
-                };
         }
 
-        public CalculatorOutput PerformOneCalculation()
+        public string PerformOneCalculation()
         {
             // Request inputs
             string operatorStr = GetOperatorFromUser();
-            _output.Operator = operatorStr;
-
             List<int?> operands = GetListOfOperands(operatorStr);
-            CalculateAnswer(operatorStr, operands);
 
-            return _output;
+            return CalculateAnswer(operatorStr, operands);
         }
 
         private string GetOperatorFromUser()
@@ -59,7 +50,7 @@ namespace Calculator
             return operands;
         }
 
-        private void CalculateAnswer(string operatorStr, List<int?> operands)
+        private string CalculateAnswer(string operatorStr, List<int?> operands)
         {
             List<int> numbers = operands.Select(o => o.Value).ToList();
 
@@ -82,14 +73,22 @@ namespace Calculator
                     throw new ArgumentException(string.Format("\"{0}\" is an unsupported operator.", operatorStr));
             }
 
-            LogCalculation(numbers, answer);
+            LogCalculation(operatorStr, numbers, answer);
+
+            return answer.ToString();
         }
 
-        private void LogCalculation(List<int> operands, decimal answer)
+        private void LogCalculation(string operatorStr, List<int> operands, decimal answer)
         {
-            _output.Operands = string.Join(",", operands.Select(o => o.ToString()).ToList());
-            _output.Answer = answer.ToString();
-            _log.AddToCalculatorOutput(_output);
+            _log.AddToCalculatorOutput(
+                new CalculatorOutput()
+            {
+                DateTime = DateTime.Now.ToString(),
+                Mode = "Numbers",
+                Operator = operatorStr,
+                Operands = string.Join(",", operands.Select(o => o.ToString()).ToList()),
+                Answer = answer.ToString()
+            });
         }
     }
 }

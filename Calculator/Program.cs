@@ -8,7 +8,9 @@ namespace Calculator
         static void Main(string[] args)
         {
             UserOutput.PrintWelcomeMessage();
+
             Log log = new Log("CalculatorLog.txt");
+            Dictionary<int, ICalculator> calcs = CreateCalculatorDict(ref log);
 
             bool continueCalc = false;
             do
@@ -18,17 +20,8 @@ namespace Calculator
 
                 try
                 {
-                    switch (mode)
-                    {
-                        case (int)UserInput.Mode.Numbers:
-                            output = new NumberCalculator(log).PerformOneCalculation();
-                            break;
-                        case (int)UserInput.Mode.Dates:
-                            output = new DateCalculator(log).PerformOneDateCalculation();
-                            break;
-                    }
-
-                    UserOutput.PrintAnswer(output.Answer);
+                    string answer = calcs.GetValueOrDefault(mode).PerformOneCalculation();
+                    UserOutput.PrintAnswer(answer);
                 }
                 catch (ArgumentException ex)
                 {
@@ -43,6 +36,15 @@ namespace Calculator
             log.CommitOutputToLogFile();
 
             Console.ReadLine();
+        }
+
+        private static Dictionary<int, ICalculator> CreateCalculatorDict(ref Log log)
+        {
+            return new Dictionary<int, ICalculator>()
+            {
+                { (int)UserInput.Mode.Numbers, new NumberCalculator(log)},
+                { (int)UserInput.Mode.Dates, new DateCalculator(log)}
+            };
         }
     }
 }

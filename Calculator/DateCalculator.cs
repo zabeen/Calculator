@@ -1,22 +1,16 @@
 ﻿using System;
 namespace Calculator
 {
-    public class DateCalculator
+    public class DateCalculator: ICalculator
     {
         private Log _log;
-        private CalculatorOutput _output;
 
         public DateCalculator(Log log)
         {
             _log = log;
-
-            _output = new CalculatorOutput(){
-                    DateTime = DateTime.Now.ToString(),
-                    Mode = "Dates"
-                };
         }
 
-        public CalculatorOutput PerformOneDateCalculation()
+        public string PerformOneCalculation()
         {
             // Request inputs
             DateTime originalDate = GetDateFromUser();
@@ -27,7 +21,7 @@ namespace Calculator
 
             LogCalculation(originalDate.ToShortDateString(), daysToAdd.ToString(), shortDateAnswer);
 
-            return _output;
+            return shortDateAnswer;
         }
 
         private DateTime GetDateFromUser()
@@ -46,11 +40,15 @@ namespace Calculator
 
         private void LogCalculation(string originalDate, string daysToAdd, string answer)
         {
-            _output.Operator = "+";
-            _output.Operands = string.Format("{0}, {1}days", originalDate, daysToAdd);
-            _output.Answer = answer;
-
-            _log.AddToCalculatorOutput(_output);
+            _log.AddToCalculatorOutput(
+               new CalculatorOutput()
+               {
+                   DateTime = DateTime.Now.ToString(),
+                   Mode = "Dates",
+                   Operator = "+",
+                   Operands = string.Format("{0}, {1}days", originalDate, daysToAdd),
+                   Answer = answer
+               });
         }
     }
 }
